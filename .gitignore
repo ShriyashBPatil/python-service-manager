@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.env
+.venv
+
+# Local runtime configs & state
+settings.json
+services.json
+*.log
+*.sqlite3
+*.db
+
+# IDE & OS
+.DS_Store
+.idea/
+.vscode/

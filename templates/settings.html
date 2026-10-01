@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="mb-0">Settings</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Default Run As User</label>
+                        <input type="text" class="form-control" name="default_user" value="{{ settings.default_user }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Default Working Directory</label>
+                        <input type="text" class="form-control" name="default_working_dir" value="{{ settings.default_working_dir }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Default Restart Policy</label>
+                        <select class="form-select" name="default_restart_policy">
+                            <option value="always" {% if settings.default_restart_policy == 'always' %}selected{% endif %}>Always</option>
+                            <option value="on-failure" {% if settings.default_restart_policy == 'on-failure' %}selected{% endif %}>On Failure</option>
+                            <option value="no" {% if settings.default_restart_policy == 'no' %}selected{% endif %}>Never</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Theme</label>
+                        <select class="form-select" name="theme">
+                            <option value="light" {% if settings.theme == 'light' %}selected{% endif %}>Light</option>
+                            <option value="dark" {% if settings.theme == 'dark' %}selected{% endif %}>Dark</option>
+                        </select>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <label class="form-label">Manager Password</label>
+                        <input type="text" class="form-control" name="password" value="{{ settings.password | default('admin') }}" placeholder="Leave blank to use default 'admin'">
+                        <small class="text-muted">Used to login to this dashboard.</small>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label class="form-label mb-0"><i class="bi bi-cloud-check text-primary me-1"></i>AIC Cloud API Key</label>
+                            {% if aic_cloud and aic_cloud.connected %}
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill small"><i class="bi bi-check-circle me-1"></i>Connected</span>
+                            {% else %}
+                                <span class="badge bg-secondary-subtle text-secondary rounded-pill small">Not Connected</span>
+                            {% endif %}
+                        </div>
+                        <input type="text" class="form-control font-monospace" name="aic_api_key" value="{{ settings.aic_api_key | default('') }}" placeholder="aic_...">
+                        <small class="text-muted">Used to authenticate and query AIC Cloud VPS details, resources, and server firewall.</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Save Settings</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

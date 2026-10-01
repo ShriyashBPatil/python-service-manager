@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="{{ settings.theme }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Manager &bull; Daemons & Containers</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+    <link rel="alternate icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-glass sticky-top mb-4">
+        <div class="container-fluid px-lg-4">
+            <a class="navbar-brand d-flex align-items-center gap-2.5 py-0" href="{{ url_for('dashboard') }}">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="Service Manager" width="30" height="30" class="brand-logo-img">
+                <div class="d-flex flex-column">
+                    <div class="d-flex align-items-center gap-1.5">
+                        <span class="lh-1 fs-5 fw-bold brand-title">Service<span class="text-primary">Manager</span></span>
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill py-0 px-1.5" style="font-size: 0.65rem;">v2.0</span>
+                    </div>
+                    <span class="text-secondary small mt-0.5" style="font-size: 0.68rem; letter-spacing: 0.04em;">Systemd & Docker Management</span>
+                </div>
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-1 my-2 my-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
+                            <i class="bi bi-speedometer2 me-1.5"></i> Dashboard
+                        </a>
+                    </li>
+                    {% if is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 {% if request.endpoint == 'create' %}active{% endif %}" href="{{ url_for('create') }}">
+                            <i class="bi bi-plus-circle me-1.5"></i> Create
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 {% if request.endpoint == 'import_service' %}active{% endif %}" href="{{ url_for('import_service') }}">
+                            <i class="bi bi-box-arrow-in-down me-1.5"></i> Import
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 {% if request.endpoint == 'docker_dashboard' %}active{% endif %}" href="{{ url_for('docker_dashboard') }}">
+                            <i class="bi bi-box-seam me-1.5"></i> Docker
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 {% if request.endpoint == 'port_checker' %}active{% endif %}" href="{{ url_for('port_checker') }}">
+                            <i class="bi bi-ethernet me-1.5"></i> Ports
+                        </a>
+                    </li>
+                    {% if is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 {% if request.endpoint == 'terminal' %}active{% endif %}" href="{{ url_for('terminal') }}">
+                            <i class="bi bi-terminal me-1.5"></i> Terminal
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 {% if request.endpoint == 'view_settings' %}active{% endif %}" href="{{ url_for('view_settings') }}">
+                            <i class="bi bi-gear me-1.5"></i> Settings
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-sm btn-outline-danger px-3 py-1.5 rounded-pill d-flex align-items-center gap-1" href="{{ url_for('logout') }}">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item ms-lg-2 d-flex align-items-center gap-2">
+                        <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle rounded-pill py-1.5 px-2.5 font-monospace small">
+                            <i class="bi bi-eye me-1"></i> Guest View
+                        </span>
+                        <a class="btn btn-sm btn-primary px-3 py-1.5 rounded-pill d-flex align-items-center gap-1" href="{{ url_for('login') }}">
+                            <i class="bi bi-box-arrow-in-right"></i> Admin Login
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid px-lg-4 mb-5">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm border-0 d-flex align-items-center rounded-3 mb-4">
+                        <i class="bi {% if category == 'success' %}bi-check-circle-fill text-success{% elif category == 'danger' %}bi-exclamation-triangle-fill text-danger{% else %}bi-info-circle-fill text-info{% endif %} me-2 fs-5"></i>
+                        <div class="fw-medium">{{ message }}</div>
+                        <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- System Info Footer -->
+    <footer class="footer mt-auto py-3 bg-body-tertiary border-top">
+        <div class="container-fluid px-lg-4">
+            <div class="row align-items-center gy-2 text-muted small">
+                <div class="col-md-6 text-center text-md-start">
+                    <i class="bi bi-hdd-network me-1 text-primary"></i> <strong>{{ sys_info.hostname }}</strong> &bull; <span class="text-secondary">{{ sys_info.os }}</span>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <span><i class="bi bi-cpu me-1 text-primary"></i>CPU: <strong>{{ sys_info.cpu_usage }}</strong></span>
+                    <span class="mx-2 text-muted">&bull;</span>
+                    <span><i class="bi bi-memory me-1 text-info"></i>RAM: <strong>{{ sys_info.memory_usage }}</strong></span>
+                    <span class="mx-2 text-muted">&bull;</span>
+                    <span><i class="bi bi-clock-history me-1 text-warning"></i>Up: <strong>{{ sys_info.uptime }}</strong></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+

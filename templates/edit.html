@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0">Edit Service: {{ service.name }}</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Service Name (Cannot be changed)</label>
+                        <input type="text" class="form-control" value="{{ service.name }}" disabled>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <input type="text" class="form-control" name="description" value="{{ service.description }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Script / Binary Path</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="python_file" name="python_file" value="{{ service.python_file }}" required>
+                            <button class="btn btn-outline-secondary btn-browse" type="button" data-target="python_file">Browse</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Working Directory</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="working_dir" name="working_dir" value="{{ service.working_dir }}" required>
+                            <button class="btn btn-outline-secondary btn-browse" type="button" data-target="working_dir">Browse</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Virtual Environment Path</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="venv" name="venv" value="{{ service.venv }}">
+                            <button class="btn btn-outline-secondary btn-browse" type="button" data-target="venv">Browse</button>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Run As User</label>
+                            <input type="text" class="form-control" name="user" value="{{ service.user }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Restart Policy</label>
+                            <select class="form-select" name="restart">
+                                <option value="always" {% if service.restart == 'always' %}selected{% endif %}>Always</option>
+                                <option value="on-failure" {% if service.restart == 'on-failure' %}selected{% endif %}>On Failure</option>
+                                <option value="no" {% if service.restart == 'no' %}selected{% endif %}>Never</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Environment Variables</label>
+                        <textarea class="form-control" name="env_vars" rows="3">{{ service.env_vars }}</textarea>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-warning">Save Changes & Restart</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Re-use File Browser Modal -->
+{% include 'file_browser_modal.html' ignore missing %}
+{% endblock %}

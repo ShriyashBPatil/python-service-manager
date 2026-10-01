@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>System Services</h2>
+    <p class="text-muted mb-0">Import existing systemd services to manage them here.</p>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('import_service') }}" class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <label for="service_name" class="col-form-label">Service Name:</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" id="service_name" name="service_name" class="form-control" placeholder="e.g. myapp (without .service)" required>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Import to Manager</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0">Found System Services in /etc/systemd/system/</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Service Name</th>
+                        <th>Description</th>
+                        <th>ExecStart</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in system_services %}
+                    <tr>
+                        <td class="align-middle"><strong>{{ s.name }}</strong></td>
+                        <td class="align-middle">{{ s.description }}</td>
+                        <td class="align-middle text-truncate" style="max-width: 300px;" title="{{ s.exec_start }}">
+                            <code>{{ s.exec_start }}</code>
+                        </td>
+                        <td class="align-middle">
+                            <form method="POST" action="{{ url_for('import_service') }}" class="m-0">
+                                <input type="hidden" name="service_name" value="{{ s.name }}">
+                                <button type="submit" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-box-arrow-in-down"></i> Import
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center py-3 text-muted">No custom systemd services found in /etc/systemd/system/.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

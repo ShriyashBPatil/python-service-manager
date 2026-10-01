@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css" />
+<style>
+    .terminal-container {
+        height: 60vh;
+        width: 100%;
+        background-color: #000;
+        padding: 10px;
+        border-radius: 0 0 5px 5px;
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 id="terminal-title"><i class="bi bi-terminal me-2"></i>SSH Terminal</h4>
+</div>
+
+<div class="card shadow-sm border-0 bg-dark text-light">
+    <div class="card-header bg-black border-secondary d-flex align-items-center">
+        <div class="me-2" style="width: 12px; height: 12px; border-radius: 50%; background-color: #ff5f56;"></div>
+        <div class="me-2" style="width: 12px; height: 12px; border-radius: 50%; background-color: #ffbd2e;"></div>
+        <div class="me-2" style="width: 12px; height: 12px; border-radius: 50%; background-color: #27c93f;"></div>
+    </div>
+    <div class="card-body p-0">
+        <!-- Login Form -->
+        <div id="ssh-login-form" class="p-4">
+            <h5 class="text-white mb-3">Connect to Remote Server</h5>
+            <div class="row g-2 mb-3" style="max-width: 600px;">
+                <div class="col-md-8">
+                    <input type="text" id="ssh-hostname" class="form-control bg-dark text-light border-secondary" placeholder="Hostname (e.g. 127.0.0.1)" value="127.0.0.1">
+                </div>
+                <div class="col-md-4">
+                    <input type="number" id="ssh-port" class="form-control bg-dark text-light border-secondary" placeholder="Port" value="22">
+                </div>
+                <div class="col-md-6">
+                    <input type="text" id="ssh-username" class="form-control bg-dark text-light border-secondary" placeholder="Username (e.g. root)" value="root">
+                </div>
+                <div class="col-md-6">
+                    <input type="password" id="ssh-password" class="form-control bg-dark text-light border-secondary" placeholder="Password">
+                </div>
+            </div>
+            <button class="btn btn-primary" id="btn-connect">Connect</button>
+        </div>
+        
+        <!-- Terminal Window (Hidden until connected) -->
+        <div id="terminal" class="terminal-container d-none"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+<script>
+    const term = new Terminal({
+        cursorBlink: true,
+        theme: {
+            background: '#000000',
+            foreground: '#00ff00'
+        }
+    });
+    const fitAddon = new FitAddon.FitAddon();
+    term.loadAddon(fitAddon);
+
+    const socket = io();
+
+    document.getElementById('btn-connect').addEventListener('click', () => {
+        const hostname = document.getElementById('ssh-hostname').value || '127.0.0.1';
+        const port = document.getElementById('ssh-port').value || '22';
+        const username = document.getElementById('ssh-username').value || 'root';
+        const password = document.getElementById('ssh-password').value;
+        if (!password) {
+            alert('Password required');
+            return;
+        }
+        
+        // Update Title
+        document.getElementById('terminal-title').innerHTML = `<i class="bi bi-terminal me-2"></i>SSH Terminal (${username}@${hostname}:${port})`;
+        
+        // Hide form, show terminal
+        document.getElementById('ssh-login-form').classList.add('d-none');
+        document.getElementById('terminal').classList.remove('d-none');
+        
+        // Open terminal in div
+        term.open(document.getElementById('terminal'));
+        fitAddon.fit();
+        
+        term.write('Initializing connection via WebSockets...\r\n');
+        
+        socket.emit('ssh-connect', { 
+            hostname: hostname,
+            port: port,
+            username: username,
+            password: password 
+        });
+        term.focus();
+    });
+    
+    socket.on('pty-output', function(data) {
+        term.write(data.output);
+    });
+    
+    term.onData(data => {
+        socket.emit('pty-input', { input: data });
+    });
+    
+    window.addEventListener('resize', () => {
+        if (!document.getElementById('terminal').classList.contains('d-none')) {
+            fitAddon.fit();
+        }
+    });
+</script>
+{% endblock %}

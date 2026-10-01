@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Create New Service</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Service Name</label>
+                        <input type="text" class="form-control" name="name" required placeholder="e.g. flask_app">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <input type="text" class="form-control" name="description" placeholder="My Service">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Script / Binary Path</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="python_file" name="python_file" required>
+                            <button class="btn btn-outline-secondary btn-browse" type="button" data-target="python_file">Browse</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Working Directory</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="working_dir" name="working_dir" value="{{ defaults.working_dir }}" required>
+                            <button class="btn btn-outline-secondary btn-browse" type="button" data-target="working_dir">Browse</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Virtual Environment Path (Optional)</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="venv" name="venv" placeholder="/path/to/venv">
+                            <button class="btn btn-outline-secondary btn-browse" type="button" data-target="venv">Browse</button>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Run As User</label>
+                            <input type="text" class="form-control" name="user" value="{{ defaults.user }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Restart Policy</label>
+                            <select class="form-select" name="restart">
+                                <option value="always" {% if defaults.restart == 'always' %}selected{% endif %}>Always</option>
+                                <option value="on-failure" {% if defaults.restart == 'on-failure' %}selected{% endif %}>On Failure</option>
+                                <option value="no" {% if defaults.restart == 'no' %}selected{% endif %}>Never</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Environment Variables (Optional, one per line KEY=VALUE)</label>
+                        <textarea class="form-control" name="env_vars" rows="3" placeholder="PORT=5000&#10;FLASK_ENV=production"></textarea>
+                    </div>
+                    
+                    <div class="mb-4 form-check">
+                        <input type="checkbox" class="form-check-input" id="autostart" name="autostart" checked>
+                        <label class="form-check-label" for="autostart">Enable Auto Start on Boot & Start Immediately</label>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Create Service</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- File Browser Modal -->
+<div class="modal fade" id="fileBrowserModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">File Browser</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+            <button class="btn btn-outline-secondary" id="browserUpBtn" type="button">Up</button>
+            <input type="text" class="form-control" id="browserCurrentPath" readonly>
+        </div>
+        <div class="list-group" id="browserList" style="max-height: 400px; overflow-y: auto;">
+            <!-- Populated by JS -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="browserSelectBtn">Select Current</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

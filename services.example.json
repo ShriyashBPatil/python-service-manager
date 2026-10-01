@@ -1,0 +1,15 @@
+{
+  "services": [
+    {
+      "name": "sample-api",
+      "description": "Sample FastAPI / Flask Application Service",
+      "python_file": "app.py",
+      "working_dir": "/var/www/sample-api",
+      "venv": "/var/www/sample-api/venv",
+      "user": "root",
+      "restart": "always",
+      "env_vars": "PYTHONUNBUFFERED=1\nPORT=8000",
+      "autostart": true
+    }
+  ]
+}

@@ -1,0 +1,332 @@
+/* Minimalist Theme & Clean Design System */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+    --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    
+    --accent-primary: #4f46e5;
+    --accent-primary-subtle: rgba(79, 70, 229, 0.08);
+    --border-color: rgba(226, 232, 240, 0.9);
+    --border-color-dark: rgba(255, 255, 255, 0.08);
+    --radius-md: 10px;
+    --radius-sm: 6px;
+}
+
+[data-bs-theme="dark"] {
+    --bs-body-bg: #0b0f17;
+    --bs-body-color: #f1f5f9;
+    --bs-secondary-color: #94a3b8;
+    --bs-tertiary-bg: #131b2e;
+    --bs-card-bg: #0f172a;
+    --border-color: rgba(255, 255, 255, 0.07);
+    --card-shadow: none;
+    --card-shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.3);
+    --navbar-bg: rgba(15, 23, 42, 0.92);
+    --navbar-border: rgba(255, 255, 255, 0.08);
+    --nav-link-color: #94a3b8;
+    --nav-link-hover: #ffffff;
+    --nav-link-active-bg: rgba(255, 255, 255, 0.1);
+    --nav-link-active-color: #ffffff;
+    --brand-title-color: #ffffff;
+}
+
+[data-bs-theme="light"] {
+    --bs-body-bg: #f8fafc;
+    --bs-body-color: #0f172a;
+    --bs-secondary-color: #64748b;
+    --bs-tertiary-bg: #f1f5f9;
+    --bs-card-bg: #ffffff;
+    --border-color: #e2e8f0;
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    --card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.06);
+    --navbar-bg: rgba(255, 255, 255, 0.95);
+    --navbar-border: #e2e8f0;
+    --nav-link-color: #475569;
+    --nav-link-hover: #0f172a;
+    --nav-link-active-bg: rgba(79, 70, 229, 0.1);
+    --nav-link-active-color: #4f46e5;
+    --brand-title-color: #0f172a;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: var(--font-main);
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Minimal Navbar */
+.navbar-glass {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background-color: var(--navbar-bg) !important;
+    border-bottom: 1px solid var(--navbar-border) !important;
+    transition: all 0.2s ease;
+}
+
+.brand-icon-box {
+    background: var(--accent-primary);
+    color: #ffffff;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+}
+
+.brand-title {
+    color: var(--brand-title-color) !important;
+}
+
+.nav-link {
+    font-weight: 500;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+    padding: 0.35rem 0.65rem !important;
+    color: var(--nav-link-color) !important;
+    transition: all 0.15s ease;
+}
+
+.nav-link:hover {
+    color: var(--nav-link-hover) !important;
+}
+
+.nav-link.active {
+    background-color: var(--nav-link-active-bg) !important;
+    color: var(--nav-link-active-color) !important;
+}
+
+/* Minimal Metric Stat Box */
+.minimal-stat-card {
+    background: var(--bs-card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    box-shadow: var(--card-shadow);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.minimal-stat-card:hover {
+    border-color: rgba(79, 70, 229, 0.4);
+    box-shadow: var(--card-shadow-hover);
+}
+
+/* Telemetry Card */
+.telemetry-card {
+    background: var(--bs-card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--card-shadow);
+}
+    background: var(--bs-card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+}
+
+/* Service Card Styles */
+.service-card {
+    background: var(--bs-card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.service-card:hover {
+    border-color: rgba(79, 70, 229, 0.35);
+    box-shadow: var(--card-shadow-hover);
+}
+
+.service-card-header {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.service-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Status Indicators */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.18rem 0.55rem;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.status-pill-running {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.status-pill-stopped {
+    background-color: rgba(148, 163, 184, 0.12);
+    color: #94a3b8;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-dot-running {
+    background-color: #10b981;
+}
+
+.status-dot-stopped {
+    background-color: #94a3b8;
+}
+
+/* Metric Tag */
+.metric-tag {
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--bs-secondary-color);
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--radius-sm);
+    background-color: var(--bs-tertiary-bg);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* Service Path & Details Box */
+.service-path-box {
+    background-color: var(--bs-tertiary-bg);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.775rem;
+    font-family: var(--font-mono);
+    color: var(--bs-secondary-color);
+    word-break: break-all;
+}
+
+.path-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+/* Minimal Action Buttons */
+.btn-action-group .btn {
+    border-radius: var(--radius-sm);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.btn-icon-only {
+    width: 28px;
+    height: 28px;
+    padding: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+}
+
+/* Toolbar */
+.minimal-toolbar {
+    background: var(--bs-card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.4rem 0.75rem;
+}
+
+.search-input-group {
+    background-color: var(--bs-tertiary-bg);
+    border-radius: var(--radius-sm);
+    padding: 0.2rem 0.5rem;
+}
+
+.search-input-group input {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    font-size: 0.825rem;
+}
+
+.filter-btn-group .btn {
+    border-radius: var(--radius-sm);
+    font-size: 0.775rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+}
+
+/* Table Styling */
+.table-minimal {
+    --bs-table-bg: transparent;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table-minimal thead th {
+    background-color: var(--bs-tertiary-bg);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    color: var(--bs-secondary-color);
+    padding: 0.65rem 0.85rem;
+}
+
+.table-minimal tbody tr {
+    transition: background-color 0.1s ease;
+}
+
+.table-minimal tbody tr:hover {
+    background-color: rgba(79, 70, 229, 0.03);
+}
+
+.table-minimal tbody td {
+    padding: 0.65rem 0.85rem;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.825rem;
+}
+
+/* Modals */
+.modal-modern .modal-content {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    background-color: var(--bs-body-bg);
+}
+
+.modal-modern .modal-header {
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.85rem 1.25rem;
+}
+
+.modal-modern .modal-body {
+    padding: 1.25rem;
+}
+
+.modal-modern .modal-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 0.65rem 1.25rem;
+}
+
+.copy-btn {
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+    cursor: pointer;
+}
+
+.copy-btn:hover {
+    opacity: 1;
+}
+

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="100%" height="100%">
+  <defs>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <filter id="logoShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#4f46e5" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <g filter="url(#logoShadow)">
+    <!-- Base Rounded Container Badge -->
+    <rect x="4" y="4" width="40" height="40" rx="10" fill="url(#brandGrad)" />
+    
+    <!-- Central Service & Container Geometric Monogram -->
+    <!-- Top Cube / Container Layer -->
+    <path d="M24 12 L33 17.2 L24 22.4 L15 17.2 Z" fill="#ffffff" opacity="0.95" />
+    
+    <!-- Left Face with subtle opacity -->
+    <path d="M15 19 L23 23.6 V32.5 L15 27.9 Z" fill="#ffffff" opacity="0.75" />
+    
+    <!-- Right Face with accent gradient -->
+    <path d="M25 23.6 L33 19 V27.9 L25 32.5 Z" fill="url(#accentGrad)" />
+    
+    <!-- Pulse Center Node -->
+    <circle cx="24" cy="23" r="2.2" fill="#ffffff" />
+    
+    <!-- Running Indicator Dot -->
+    <circle cx="37" cy="11" r="3.2" fill="#10b981" stroke="#ffffff" stroke-width="1.2" />
+  </g>
+</svg>

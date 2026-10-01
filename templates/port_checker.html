@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Port Checker</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="input-group mb-3">
+                        <input type="number" class="form-control" name="port" placeholder="Enter port number (e.g. 5000)" value="{{ port or '' }}" required>
+                        <button class="btn btn-primary" type="submit">Check</button>
+                    </div>
+                </form>
+                
+                {% if result %}
+                    {% if result.success %}
+                        <div class="alert alert-success mt-3">
+                            <i class="bi bi-check-circle-fill"></i> Port {{ port }} is Available.
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger mt-3">
+                            <i class="bi bi-x-circle-fill"></i> Port {{ port }} is in use.<br>
+                            <small>{{ result.msg }}</small>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

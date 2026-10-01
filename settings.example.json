@@ -1,0 +1,7 @@
+{
+  "default_user": "root",
+  "default_restart_policy": "always",
+  "default_working_dir": "/var/www",
+  "theme": "light",
+  "password": "change_me_to_a_secure_password"
+}
